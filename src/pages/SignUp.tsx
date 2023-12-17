@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import checkPasswordStrength from "../utils/CheckPasswordStrength";
+import checkPasswordStrength from "../utils/checkPasswordStrength";
 
 const SignUp = () => {
   const [error, setError] = useState<{

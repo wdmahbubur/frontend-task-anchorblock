@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const SignIn = () => {
@@ -6,7 +6,6 @@ const SignIn = () => {
     email: string;
     password: string;
   } | null>(null);
-  const progressBar = useRef<HTMLDivElement>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

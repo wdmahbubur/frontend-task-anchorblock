@@ -1,4 +1,4 @@
-const checkPasswordStrength = (password: string, ref)=> {
+const checkPasswordStrength = (password: string, ref: HTMLDivElement)=> {
     let strength = 0;
 
     //If password contains both lower and uppercase characters
@@ -21,7 +21,7 @@ const checkPasswordStrength = (password: string, ref)=> {
 
     // If value is less than 2
     if (strength < 2 && password.length > 0) {
-      ref.current?.childNodes.forEach((node, index) => {
+      ref.current?.childNodes.forEach((node: { classList: { remove: (arg0: string) => void; add: (arg0: string) => void; }; }, index: number) => {
         if (index < 2) {
           node.classList.remove("bg-gray-300");
           node.classList.add("bg-red-600");
@@ -31,7 +31,7 @@ const checkPasswordStrength = (password: string, ref)=> {
         }
       });
     } else if (strength == 3) {
-      ref.current?.childNodes.forEach((node, index) => {
+      ref.current?.childNodes.forEach((node: { classList: { remove: (arg0: string) => void; add: (arg0: string) => void; }; }, index: number) => {
         if (index < 2) {
           node.classList.remove("bg-gray-300");
           node.classList.add("bg-red-600");
@@ -45,7 +45,7 @@ const checkPasswordStrength = (password: string, ref)=> {
         }
       });
     } else if (strength == 4) {
-      ref.current?.childNodes.forEach((node, index) => {
+      ref.current?.childNodes.forEach((node: { classList: { remove: (arg0: string) => void; add: (arg0: string) => void; }; }, index: number) => {
         if (index < 2) {
           node.classList.remove("bg-gray-300");
           node.classList.add("bg-red-600");
@@ -60,7 +60,7 @@ const checkPasswordStrength = (password: string, ref)=> {
         }
       });
     } else if (strength == 0) {
-      ref.current?.childNodes.forEach((node) => {
+      ref.current?.childNodes.forEach((node: { classList: { remove: (arg0: string) => void; add: (arg0: string) => void; }; }) => {
         node.classList.remove("bg-red-600");
         node.classList.remove("bg-green-600");
         node.classList.remove("bg-yellow-600");
