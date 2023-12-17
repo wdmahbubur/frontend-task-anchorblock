@@ -158,7 +158,7 @@ const SignUp = () => {
                 <div className="h-1 w-9 bg-gray-300 rounded"></div>
               </div>
               <button
-                className="bg-primary text-white font-medium py-3 rounded-md mt-4 hover:bg-purple-850 transition duration-300"
+                className="bg-brand-700 text-white font-medium py-3 rounded-md mt-4 hover:bg-purple-850 transition duration-300"
                 type="submit"
               >
                 Sign Up
