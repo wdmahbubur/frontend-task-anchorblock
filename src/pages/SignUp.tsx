@@ -1,13 +1,29 @@
-import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import checkPasswordStrength from "../utils/checkPasswordStrength";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { registerUser } from "../redux/authThunks";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
+  const { isLoading, user } = useSelector((state: RootState) => state.auth);
+  const authError = useSelector((state: RootState) => state.auth.error);
+  const navigate = useNavigate();
+
   const [error, setError] = useState<{
     email: string;
     password: string;
   } | null>(null);
   const progressBar = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (user?.token) {
+      navigate("/dashboard");
+    } else {
+      navigate("/sign-up");
+    }
+  }, [user, navigate]);
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     checkPasswordStrength(e.currentTarget.value, progressBar);
@@ -40,8 +56,10 @@ const SignUp = () => {
       setError(null);
     }
 
-    console.log("Form submitted");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dispatch(registerUser({ email, password }) as any);
   };
+  console.log(authError);
   return (
     <div className="container">
       <div className="h-screen flex justify-center items-center">
@@ -160,8 +178,9 @@ const SignUp = () => {
               <button
                 className="bg-brand-700 text-white font-medium py-3 rounded-md mt-4 hover:bg-purple-850 transition duration-300"
                 type="submit"
+                disabled={isLoading}
               >
-                Sign Up
+                {isLoading ? "Signing Up.." : "Sign Up"}
               </button>
               <div className="flex items-center">
                 <p className="text-sm text-gray-400">
@@ -175,6 +194,11 @@ const SignUp = () => {
           </div>
         </div>
       </div>
+      {authError && (
+        <div className="fixed bottom-5 right-5 bg-red-700 text-white px-4 py-2 rounded-md shadow-lg">
+          {authError}
+        </div>
+      )}
     </div>
   );
 };

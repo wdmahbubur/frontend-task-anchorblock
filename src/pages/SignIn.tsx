@@ -1,16 +1,34 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { RootState } from "../redux/store";
+import { loginUser } from "../redux/authThunks";
 
 const SignIn = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, user } = useSelector((state: RootState) => state.auth);
+  const authError = useSelector((state: RootState) => state.auth.error);
+
   const [error, setError] = useState<{
     email: string;
     password: string;
   } | null>(null);
 
+  useEffect(() => {
+    if (user?.token) {
+      navigate("/dashboard");
+    } else {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const email = (e.currentTarget.elements[0] as HTMLInputElement).value;
-    const password = (e.currentTarget.elements[1] as HTMLInputElement).value;
+    const email: string = (e.currentTarget.elements[0] as HTMLInputElement)
+      .value;
+    const password: string = (e.currentTarget.elements[1] as HTMLInputElement)
+      .value;
 
     if (email === "" && password === "") {
       setError({
@@ -34,8 +52,10 @@ const SignIn = () => {
       setError(null);
     }
 
-    console.log("Form submitted");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dispatch(loginUser({ email, password }) as any);
   };
+
   return (
     <div className="container">
       <div className="h-screen flex justify-center items-center">
@@ -146,8 +166,9 @@ const SignIn = () => {
               <button
                 className="bg-brand-700 text-white font-medium py-3 rounded-md mt-4 hover:bg-purple-850 transition duration-300"
                 type="submit"
+                disabled={isLoading}
               >
-                Sign In
+                {isLoading ? "Sign In..." : "Sign In"}
               </button>
               <div className="flex items-center">
                 <p className="text-sm text-gray-400">Don't have an account?</p>
@@ -159,6 +180,12 @@ const SignIn = () => {
           </div>
         </div>
       </div>
+      {/* Error toast */}
+      {authError && (
+        <div className="fixed bottom-5 right-5 bg-red-700 text-white px-4 py-2 rounded-md shadow-lg">
+          {authError}
+        </div>
+      )}
     </div>
   );
 };
