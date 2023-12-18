@@ -1,4 +1,5 @@
-const checkPasswordStrength = (password: string, ref: HTMLDivElement)=> {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const checkPasswordStrength = (password: string, ref: any)=> {
     let strength = 0;
 
     //If password contains both lower and uppercase characters
